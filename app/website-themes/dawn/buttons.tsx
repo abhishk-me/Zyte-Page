@@ -1,10 +1,12 @@
-import { useOutletContext } from '@remix-run/react';
+import { useOutletContext, useParams } from '@remix-run/react';
 import { FC } from "react";
-import { ButtonGroupProps } from '~/types/page-data';
+import { apiGateway } from '~/api-config';
+import { ButtonGroupProps, PageDataType } from '~/types/page-data';
 
 
 export const ButtonWidget: FC<{ props: ButtonGroupProps, elementId: string }> = ({ props, elementId }) => {
-  const { onSelectElement, inspectorOn } = useOutletContext<{ onSelectElement: (id: string) => void, inspectorOn: boolean }>();
+  const { onSelectElement, inspectorOn, page } = useOutletContext<{ page: PageDataType, onSelectElement: (id: string) => void, inspectorOn: boolean }>();
+  const params = useParams();
 
   return (
     <div
@@ -29,6 +31,7 @@ export const ButtonWidget: FC<{ props: ButtonGroupProps, elementId: string }> = 
             }}
           >
             <button
+              onClick={inspectorOn ? undefined : () => apiGateway.post(`/analytics`, { event: "CLICK", pageId: params.pageId })}
               style={{
                 fontSize: button.fontSize || 14,
                 fontWeight: button.fontWeight || 400,
@@ -63,6 +66,6 @@ export const ButtonWidget: FC<{ props: ButtonGroupProps, elementId: string }> = 
           </div>
         ))}
       </div>
-    </div>
+    </div >
   );
 }

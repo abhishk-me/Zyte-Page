@@ -46,6 +46,12 @@ export default function Index() {
   const [page, setPage] = useState<PageDataType>(JSON.parse(JSON.stringify(pageData)));
 
   useEffect(() => {
+    if (pageData?.id) {
+      apiGateway.post(`/analytics`, { event: "PAGE_VIEW", pageId: pageData.id });
+    }
+  }, [pageData?.id])
+
+  useEffect(() => {
     if (inspectorOn) {
       setPage(pageDataFromEditor)
     }

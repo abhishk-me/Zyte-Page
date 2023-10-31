@@ -100,7 +100,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className='bg-[var(--background)] pb-20'>
+      <body className='bg-[var(--background)]'>
         <Outlet context={{ page, onSelectElement, inspectorOn } satisfies ContextType} />
         <ScrollRestoration />
         <Scripts />
