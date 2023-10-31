@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --button-bg: #212121;
+  --button-text: #ffffff;
+  --button-border: #202020;
+  --swiper-navigation-size: 30px;
+  --swiper-navigation-color: #fff;
+}
+
+.container-m {
+  max-width: 1160px;
+  margin: auto;
+}
+
+.container-s {
+  max-width: 1080px;
+  margin: auto;
+}
+
+.container-xs {
+  max-width: 800px;
+  margin: auto;
+}
+
+.sm-w-full {
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .sm-w-full {
+    width: 100% !important;
+  }
+}
+
+html {
+  font-size: 14px;
+}
+
+button,
+div {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input {
+  font-size: 16px;
+}
+
+.focusable {
+  position: relative;
+}
+
+.focusable::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: 2px solid transparent;
+  border-radius: 2px;
+}
+
+.inherit-radius::after {
+  border-radius: inherit;
+}
+
+.focusable.no-interaction {
+  cursor: pointer;
+  z-index: 10;
+}
+
+.focusable:hover::after {
+  border: 1px solid rgb(0, 123, 255);
+}
+
+.thick.focusable:hover::after {
+  border: 2px solid rgb(0, 123, 255);
+}
+
+.is-focused.focusable::after {
+  border: 2px solid rgb(0, 123, 255);
+}
+
+.no-border-focusable.focusable:hover::after {
+  border: 0px
+}

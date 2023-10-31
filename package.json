@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "remix build",
+    "dev": "PORT=4444 remix dev",
+    "start": "dotenv remix-serve build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@remix-run/css-bundle": "^1.19.3",
+    "@remix-run/node": "^1.18.1",
+    "@remix-run/react": "^1.18.1",
+    "@remix-run/serve": "^1.18.1",
+    "@typeform/embed-react": "^3.2.0",
+    "apisauce": "^3.0.1",
+    "isbot": "^3.6.8",
+    "postmate": "^1.5.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10",
+    "react-spotify-embed": "^2.0.3"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^1.18.1",
+    "@remix-run/eslint-config": "^1.18.1",
+    "@types/postmate": "^1.5.3",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "eslint": "^8.38.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
