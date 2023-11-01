@@ -6,6 +6,9 @@ import { ApiResponse } from 'apisauce';
 import { apiGateway } from '~/api-config';
 import { useEffect, useState } from 'react';
 
+// 
+// Loader fetches the page data based on the page id.
+// 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const { pageId } = params;
   const promises: [
@@ -21,6 +24,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   });
 };
 
+// Add title and description of the page
 export const meta: V2_MetaFunction<typeof loader> = ({
   data
 }) => {
@@ -41,9 +45,21 @@ export const meta: V2_MetaFunction<typeof loader> = ({
 };
 
 export default function Index() {
+  // data from loader
   const { pageData } = useLoaderData<typeof loader>();
+
+  // data from the root component which comes from the editor when in editing mode.
   const { page: pageDataFromEditor, inspectorOn } = useOutletContext<{ page: PageDataType, onSelectElement: (id: string) => void, inspectorOn: boolean }>();
+
+  // page's data is set to saved data initially. and will only be updated if page is being edited.
   const [page, setPage] = useState<PageDataType>(JSON.parse(JSON.stringify(pageData)));
+
+  // when page is viewed inside the editor, page data is updated with the latest changes.
+  useEffect(() => {
+    if (inspectorOn) {
+      setPage(pageDataFromEditor)
+    }
+  }, [pageDataFromEditor]);
 
   useEffect(() => {
     if (pageData?.id) {
@@ -51,15 +67,10 @@ export default function Index() {
     }
   }, [pageData?.id])
 
-  useEffect(() => {
-    if (inspectorOn) {
-      setPage(pageDataFromEditor)
-    }
-  }, [pageDataFromEditor]);
-
   return (
     <>
       {page && page.sections.map((section, index) => (
+        // renders the container for a section
         <ContainerComponent data={section.layout} elementId={[index]} key={index} />
       ))}
     </>

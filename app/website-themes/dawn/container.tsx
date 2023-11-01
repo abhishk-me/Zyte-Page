@@ -1,11 +1,14 @@
 import React, { FC, useState } from 'react';
 import { Container } from '~/types/page-data';
-import { FrameComponent } from './column';
+import { ColumnRenderer } from './column';
 import { useOutletContext } from '@remix-run/react';
+
+// This is section container. it's mostly layouts and css. Container renders Columns inside.
 
 export const ContainerComponent: FC<{ data: Container, elementId: number[] }> = ({ data, elementId }) => {
   const { onSelectElement, inspectorOn } = useOutletContext<{ onSelectElement: (id: string) => void, inspectorOn: boolean }>();
   const { styles } = data;
+
   return (
     <section
       style={{
@@ -69,7 +72,7 @@ const ContainerContent: FC<{ data: Container, elementId: number[] }> = ({ data, 
               <div
                 className='flex flex-col flex-1 relative'
               >
-                <FrameComponent
+                <ColumnRenderer
                   data={column}
                   elementId={[...elementId, columnIndex]}
                 />

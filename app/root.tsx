@@ -12,7 +12,6 @@ import {
 import Postmate from 'postmate';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import stylesheet from "~/tailwind.css";
-import { WebsiteHeader } from './components/header';
 import { PageDataType } from './types/page-data';
 import { pageDataInitial } from './components/consts';
 
@@ -26,10 +25,6 @@ export const links: LinksFunction = () => [
 
 type ContextType = { page: PageDataType, onSelectElement: (id: string) => void, inspectorOn: boolean };
 
-export const loader = async () => {
-  return json({ nodeEnv: process.env.NODE_ENV, gaTrackingId: process.env.GA_TRACKING_ID });
-};
-
 export default function App() {
   const navigate = useNavigate();
   const [inspectorOn, setInspectorOn] = useState(false);
@@ -37,6 +32,7 @@ export default function App() {
   const parentRef = useRef<Postmate.ChildAPI>();
   const [page, setPage] = useState<PageDataType>(pageDataInitial);
 
+  // Sends data to the editor for the selected element
   const onSelectElement = useCallback((elementId: string) => {
     if (parentRef.current) {
       const element = document.querySelector(`#el_${elementId}`);
@@ -51,6 +47,8 @@ export default function App() {
     }
   }, [])
 
+  //Initialize postmate to communicate with the editor 
+  //Only when page is viewed inside editor  
   useEffect(() => {
     if (!handshakeRef.current) {
       const handshake = new Postmate.Model({
@@ -60,6 +58,7 @@ export default function App() {
         setPage: (page: PageDataType) => {
           setPage(page);
         },
+        // focuses an element when selected from the editor
         focusElement: (id: string) => {
           const element = document.querySelector(`#el_${id}`);
           const focusedElements = document.querySelectorAll('.is-focused');
@@ -71,18 +70,17 @@ export default function App() {
             element.classList.add("is-focused");
           }
         },
+        // Elements on page react to hover and are selectable when inspector is on
         toggleInspector: (open: boolean) => {
           setInspectorOn(open);
         },
+
         removeFocus: (index: number) => {
           const section = document.querySelector(`#section_${index + 1}`);
           if (section) {
             section.classList.remove("border");
           }
-        },
-        changePage: (url: string) => {
-          navigate(url)
-        },
+        }
       });
       handshakeRef.current = handshake
       handshake.then(parent => {
@@ -101,7 +99,9 @@ export default function App() {
         <Links />
       </head>
       <body className='bg-[var(--background)]'>
+        {/* Passing data and fuctions down the tree */}
         <Outlet context={{ page, onSelectElement, inspectorOn } satisfies ContextType} />
+        {/*  */}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import { Column, Element } from '~/types/page-data';
-import { getWidgetComponent } from '../index';
+import { getElement } from '../index';
 import { useOutletContext } from '@remix-run/react';
 
-const maxWidthMap = ["", "max-w-md", "max-w-lg", "max-w-xl", "max-w-2xl", "max-w-4xl", "max-w-full"]
+const maxWidthMap = ["", "max-w-md", "max-w-lg", "max-w-xl", "max-w-2xl", "max-w-4xl", "max-w-full"];
 
-export const FrameComponent: FC<{ data: Column, elementId: number[] }> = ({ data, elementId }) => {
+// This is Column. it's mostly layouts and css. Column renders Elements inside.
+
+export const ColumnRenderer: FC<{ data: Column, elementId: number[] }> = ({ data, elementId }) => {
   const { onSelectElement, inspectorOn } = useOutletContext<{ onSelectElement: (id: string) => void, inspectorOn: boolean }>();
   const { styles, props, children } = data;
 
@@ -60,9 +62,9 @@ export const FrameComponent: FC<{ data: Column, elementId: number[] }> = ({ data
             ${styles.horizontalAlign === "center" ? 'mx-auto' : styles.horizontalAlign === "right" ? 'ml-auto' : ''}
           `}
         >
-          {children.map((widgetElement, index) => {
+          {children.map((Element, index) => {
             return (
-              <WidgetRenderer data={widgetElement} widgetIndex={index} elementId={[...elementId, index]} key={index} />
+              <ElementRenderer data={Element} widgetIndex={index} elementId={[...elementId, index]} key={index} />
             )
           })}
         </div>
@@ -71,9 +73,10 @@ export const FrameComponent: FC<{ data: Column, elementId: number[] }> = ({ data
   )
 }
 
+const ElementRenderer: FC<{ data: Element, widgetIndex: number, elementId: number[] }> = ({ data, widgetIndex, elementId }) => {
+  // get the element's component based on theme and element name and render it with element's data
+  const Component = getElement("DAWN", data.name) as FC<{ props: typeof data.props, elementId: string }>;
 
-const WidgetRenderer: FC<{ data: Element, widgetIndex: number, elementId: number[] }> = ({ data, widgetIndex, elementId }) => {
-  const Component = getWidgetComponent("DAWN", data.name) as FC<{ props: typeof data.props, elementId: string }>;
   if (!Component) {
     return null
   }

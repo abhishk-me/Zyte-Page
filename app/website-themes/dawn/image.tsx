@@ -2,6 +2,7 @@ import { useOutletContext } from '@remix-run/react';
 import { FC } from "react";
 import { BaseElementProps } from '~/types/page-data';
 
+// This is an image element. Renders based on provided styles and data
 
 export const ImageWidget: FC<{ props: BaseElementProps, elementId: string }> = ({ props: { styles, text, image }, elementId }) => {
   const { onSelectElement, inspectorOn } = useOutletContext<{ onSelectElement: (id: string) => void, inspectorOn: boolean }>();
